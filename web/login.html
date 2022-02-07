@@ -1,0 +1,54 @@
+<!-- styling for valid and invalid inputs, if necessary -->
+<style>
+	input:invalid {
+		border: 1px solid red;
+	}
+
+	input:valid {
+		border: 1px solid green;
+	}
+</style>
+
+<form action="POST" id="login-form">
+	<p>
+		<label for="mail">Email</label>
+		<input type="email" name="mail" id="mail" required>
+		<span class="error-message" id="mail-validation-errors"></span>
+	</p>
+	<p>
+		<label for="password">Password</label>
+		<input type="password" name="password" id="pass" required>
+		<span class="error-message" id="password-validation-errors"></span>
+	</p>
+	<button type="submit">Log In</button>
+</form>
+
+<script>
+	// form independednt code that can be applied to any form
+	const loginForm = document.getElementById("login-form");
+	const submitButton = loginForm.querySelector("button[type=submit]");
+	const inputElements = loginForm.getElementsByTagName("input");
+	const errorMessage = loginForm.getElementsByClassName("error-message");
+
+	// caching the input lengths beforehand 
+	let inputElementsCount = inputElements.length;
+
+	// for validation while typing, attach validation check
+	// to inputElements on event 'change'
+	submitButton.addEventListener("click", event => {
+		let formInvalid = false;
+		for (let i = 0; i < inputElementsCount; i++){
+			if (!inputElements[i].validity.valid) {
+				formInvalid = true;
+				errorMessage[i].innerText = inputElements[i].validationMessage;
+			}
+			else {
+				errorMessage[i].innerText = ""
+			};
+		}
+
+		if (formInvalid) {
+			event.preventDefault();
+		}
+	})
+</script>
